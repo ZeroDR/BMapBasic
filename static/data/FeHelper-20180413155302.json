@@ -1,0 +1,231 @@
+/* chrome-extension://pkgccpejnmalmdinmhkkfafefagiiiad/template/fehelper_jsonformat.html */
+{
+    "regions": {
+        "name": "区域面",
+        "subType": {
+            "land": {
+                "color": "ff033447"
+            },
+            "green": {
+                "color": "ff002a3e"
+            },
+            "parkingLot": {
+                "color": "ff123A51"
+            },
+            "edu": {
+                "color": "ff123A51"
+            },
+            "public": {
+                "color": "ff123A51"
+            },
+            "traffic": {
+                "color": "ff123A51"
+            },
+            "scenicSpot": {
+                "color": "ff123A51"
+            },
+            "culture": {
+                "color": "ff123A51"
+            },
+            "health": {
+                "color": "ff123A51"
+            },
+            "sports": {
+                "color": "ff123A51"
+            },
+            "business": {
+                "color": "ff123A51"
+            },
+            "subway": {
+                "color": "ff123A51"
+            }
+        }
+    },
+    "buildings": {
+        "fillColor": "ff003041",
+        "strokeColor": "ff002939"
+    },
+    "water": {
+        "color": "ff133f58",
+        "showLabel": false,
+        "textFillColor": "ff11a7a2",
+        "textStrokeColor": "ff111118"
+    },
+    "roads": {
+        "name": "道路",
+        "subType": {
+            "highWay": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "ringRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "nationalRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "provincialRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "secondaryRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "levelThreeRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "levelFourRoad": {
+                "fillColor": "ff005e61",
+                "strokeColor": "",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "roadsBeingBuilt": {
+                "fillColor": "ff005e61",
+                "strokeColor": "ff004e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "railway": {
+                "visible": true,
+                "fillColor": "aa00383c",
+                "strokeColor": "aa005e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "highSpeedRailway": {
+                "visible": true,
+                "fillColor": "aa00383c",
+                "strokeColor": "aa005e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "subway": {
+                "visible": true,
+                "fillColor": "ff205e61",
+                "strokeColor": "ff00383c",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "subwayBeingBuilt": {
+                "visible": true,
+                "fillColor": "ff005e61",
+                "strokeColor": "ff004e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "overPass": {
+                "visible": true,
+                "fillColor": "ff005e61",
+                "strokeColor": "ff004e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "underPass": {
+                "visible": true,
+                "fillColor": "ff005e61",
+                "strokeColor": "ff004e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "other": {
+                "visible": true,
+                "fillColor": "ff005e61",
+                "strokeColor": "ff004e61",
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            },
+            "guideBoards": {
+                "visible": true,
+                "showIcon": false,
+                "textFillColor": "ff11a7a2",
+                "textStrokeColor": "ff111118"
+            }
+        }
+    },
+    "labels": {
+        "name": "标注",
+        "subType": {
+            "pois": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000",
+                "backgroundColor": "22033447"
+            },
+            "continent": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "country": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "province": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "city": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "district": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000",
+                "backgroundColor": "22033447"
+            },
+            "town": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "village": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            },
+            "aois": {
+                "showIcon": false,
+                "textFillColor": "ff00a7a2",
+                "textStrokeColor": "ff000000"
+            }
+        }
+    },
+    "borders": {
+        "name": "行政区边界",
+        "subType": {
+            "China": {
+                "fillColor": "ff006873",
+                "strokeColor": "662b3a7c"
+            },
+            "foreign": {
+                "fillColor": "ff006873",
+                "strokeColor": "662b3a7c"
+            },
+            "provincial": {
+                "fillColor": "ff006873",
+                "strokeColor": "662b3a7c"
+            }
+        }
+    }
+}

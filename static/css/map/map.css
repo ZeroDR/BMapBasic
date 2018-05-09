@@ -1,0 +1,369 @@
+/*警报CSS*/
+@keyframes warn {
+  0% {
+    transform: scale(0.3);
+    -webkit-transform: scale(0.3);
+    opacity: 0.0;
+  }
+
+  25% {
+    transform: scale(0.3);
+    -webkit-transform: scale(0.3);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    opacity: 0.7;
+  }
+
+  75% {
+    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    opacity: 0.0;
+  }
+}
+
+@keyframes warn1 {
+  0% {
+    transform: scale(0.3);
+    -webkit-transform: scale(0.3);
+    opacity: 0.0;
+  }
+
+  25% {
+    transform: scale(0.3);
+    -webkit-transform: scale(0.3);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(0.3);
+    -webkit-transform: scale(0.3);
+    opacity: 0.7;
+  }
+
+  75% {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    opacity: 0.0;
+  }
+}
+
+/* 产生动画（向外扩散变大）的圆圈 第一个圆 */
+.pulse {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #ff0000;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0;
+  -webkit-animation: warn 2s ease-out;
+  -moz-animation: warn 2s ease-out;
+  animation: warn 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  box-shadow: 1px 1px 30px #ff0000; /* 阴影效果 */
+}
+
+/* 产生动画（向外扩散变大）的圆圈 第二个圆 */
+.pulse1 {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #ff0000;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0;
+  -webkit-animation: warn1 2s ease-out;
+  -moz-animation: warn1 2s ease-out;
+  animation: warn1 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  box-shadow: 1px 1px 10px #ff0000; /* 阴影效果 */
+}
+
+/* SearchInfoWindow样式 */
+.BMapLib_SearchInfoWindow .BMapLib_bubble_title {
+  padding-left: 20px;
+  line-height: 32px;
+  height: 32px;
+  background-color: white;
+  color: #333333;
+  font-family: 'Microsoft YaHei';
+
+}
+
+.BMapLib_SearchInfoWindow {
+  border-radius: 2px;
+}
+
+.BMapLib_SearchInfoWindow .BMapLib_bubble_tools div {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.BMapLib_SearchInfoWindow .BMapLib_bubble_title {
+  background: #fff !important;
+  color: #333 !important;
+}
+
+.BMapLib_SearchInfoWindow {
+  border: none !important;
+  box-shadow: 0 0 10px #666;
+  border-radius: 6px;
+}
+
+.BMapLib_bubble_top {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.BMapLib_SearchInfoWindow .BMapLib_sendToPhone {
+  background: none;
+}
+
+/*BaiduMap*/
+.BMapLib_SearchInfoWindow .BMapLib_bubble_close {
+  background: url('/static/imgs/map/iclose.png') no-repeat center center !important;
+}
+
+.BMapLib_bubble_bottom {
+  height: 0;
+  width: 0;
+  border-left: solid 8px transparent;
+  border-right: solid 8px transparent;
+  border-top: solid 8px #fff;
+  bottom: -8px;
+  position: absolute;
+  left: 50%;
+}
+
+.BMapLib_SearchInfoWindow img {
+  display: none;
+}
+
+.fitem {
+  border: 1px solid #ddd;
+  margin: 2px 15px;
+  line-height: 18px;
+}
+
+.fitem th {
+  width: 65px;
+  font-size: 12px;
+  font-weight: normal;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.fitem td {
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  /*padding: 4px 2px;*/
+}
+
+.param {
+  /*border-top:1px solid #DDDDDD;*/
+  padding: 0 15px;
+}
+
+.line {
+  height: 1px;
+  width: 100%;
+  background: #DDDDDD;
+  margin-bottom: 12px;
+}
+
+.param .item {
+  background: #EBEBEB;
+  display: inline-block;
+  font-size: 14px;
+  font-family: "Microsoft YaHei";
+}
+
+.date {
+  font-size: 10px;
+  color: #666666;
+  line-height: 10px;
+}
+
+.value {
+  font-size: 14px;
+  color: #666666;
+  background: #EBEBEB;
+  text-align: center;
+}
+
+.key {
+  font-size: 12px;
+  color: #333333;
+  font-weight: bold;
+  /*background:#2BE42F;*/
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+}
+
+.type {
+  font-size: 14px;
+  color: #333333;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.square, .circle {
+  height: 14px;
+  width: 14px;
+  background: #2BE42F;
+  border: 1px solid #009C03;
+  display: inline-block;
+  margin-right: 4px;
+
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.keyAqi {
+  width: 188px;
+}
+
+.one {
+  text-align: center;
+  padding: 10px 0;
+  width: 188px;
+
+}
+
+.second .key,
+.third .key {
+  width: 92px;
+}
+
+.second .value,
+.third .value {
+  height: 28px;
+  width: 92px;
+}
+
+.param .value {
+  height: 28px;
+  line-height: 28px;
+}
+
+.third {
+  margin-left: 4px;
+}
+
+.secondLine {
+  width: 60px;
+  margin-top: 5px;
+}
+
+.secondLine1 {
+  width: 61px;
+}
+
+.index {
+  padding: 20px 15px 0;
+}
+
+.index .item {
+  display: inline-block;
+  font-size: 12px;
+  color: #666666;
+  margin-right: 30px;
+  font-family: 'Microsoft YaHei'
+}
+
+.vocItem {
+  width: 188px;
+}
+
+.triangle {
+  height: 0;
+  width: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 16px solid #FFB334;
+  display: inline-block;
+}
+
+.gongDi .item {
+  display: inline-block;
+  height: 48px;
+  vertical-align: top;
+}
+
+.qyPollution div {
+  display: inline-block;
+}
+
+.qyPollution {
+  background: #EBEBEB;
+  padding: 5px;
+  margin: 0 15px;
+}
+
+.qyPollution .date {
+  margin-left: 10px;
+}
+
+.qyTable {
+  background: #EBEBEB;
+  color: #666666;
+}
+
+.qyNumber {
+  color: #333333;
+}
+
+.qyImg {
+  margin-right: 10px;
+}
+
+.qyLine {
+  padding: 0 15px;
+}
+
+.Introduce {
+  font-size: 12px;
+  color: #999999;
+  padding: 0 15px 15px;
+}
+
+.Net, .Person {
+  display: inline-block;
+}
+
+.Net {
+  margin-right: 10px;
+}
+
+.chart {
+  padding: 15px 15px 0;
+}
