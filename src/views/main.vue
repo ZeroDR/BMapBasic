@@ -115,7 +115,7 @@
           t.source[lc] = {features: data.features || [], history: data.history || []};
           let dt = t.dataTransform(data, lc, 'citygid', 'aqi', 'MI');
           console.log(JSON.stringify(dt[0]));
-          dt && (dt.forEach(v => (BMapUtil.loadedOverlay(v, {hasEvent: false, fcbClick: t.requestMarker}, {hasEvent: true, hasValue: true}))));
+          dt && (dt.forEach(v => (BMapUtil.loadedOverlay(v, {hasEvent: true, fcbClick: t.requestMarker}, {hasEvent: false, hasValue: true}))));
         }, function (ex) {
           console.error(ex);
         });
@@ -142,7 +142,7 @@
         }, function (data) {
           let dt = t.geoTransform(data, lc, 'OP');
 //          console.log(JSON.stringify(dt[0]));
-          dt && (dt.forEach(v => (BMapUtil.loadedOverlay(v, {hasEvent: false, fcbClick: t.requestMarker}, {hasEvent: false, hasValue: false}))));
+          dt && (dt.forEach(v => (BMapUtil.loadedOverlay(v, {hasEvent: true, fcbClick: t.requestMarker}, {hasEvent: false, hasValue: false}))));
         }, function (ex) {
           console.error(ex);
         });
@@ -309,6 +309,8 @@
         let fs = data.features;
         for (let i = 0, length = fs.length; i < length; i++) {
           let v = fs[i];
+          if(!v.hasOwnProperty(kf))
+            continue;
           let le = 0;
           switch (vf.toUpperCase()) {
             case 'AQI':
@@ -324,17 +326,17 @@
               code: v[kf],
               lc: lc,
               lt: lt,
-              vl: v[vf],
+              vl: v[vf] || '',
               el: {
                 context: '<div style="height:20px;width:20px;border-radius: 10px;background-color:#333;"></div>',
                 height: 20,
                 width: 20
-              },
-              nm: v.pointname,
-              le: le,
+              } || '',
+              nm: v.pointname || '',
+              le: le || '',
               hd: false,//le > 3,
               miu: 'static/imgs/environmental/gs-g.png',//16*16
-              col: EnvironmentalUtil.getColorByIndex(le)
+              col: EnvironmentalUtil.getColorByIndex(le) || '#999'
             },
             geo: {
               lng: v.longitude,
