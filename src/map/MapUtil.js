@@ -327,6 +327,11 @@ export default{
     this.searchInfoWindow.open(m);
   },
 
+  //设置弹出框显示内容
+  setSearchInfoWindowContent(el){
+    this.searchInfoWindow && this.searchInfoWindow.setContent(el);
+  },
+
   //点击列表弹出框 a:属性信息 el:弹出框标签字符串 fcbClose:弹出框关闭回调函数
   locationSearchInfoWindow(a, el, fs, fcbClose){
     this.createSearchInfoWindow(a, el, fs, fcbClose);
