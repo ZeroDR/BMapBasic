@@ -327,7 +327,7 @@ export default{
     this.searchInfoWindow.open(m);
   },
 
-  //设置弹出框显示内容
+  //设置弹出框显示内容--提交
   setSearchInfoWindowContent(el){
     this.searchInfoWindow && this.searchInfoWindow.setContent(el);
   },
