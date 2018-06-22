@@ -19,21 +19,21 @@
  */
 import BMap from 'BMap'
 
-export default{
-  map: undefined,//地图对象
-  cityName: '廊坊',//默认城市名称
-  defaultZoom: 10,//默认地图比例
-  style: {style: 'googlelite'},//地图默认样式
-  hasLoaded: false,//是否初次加载
-  lsMarker: [],//marker集合
-  lsRedLabel: [],//预警Label集合
-  lsNameLabel: [],//显示值Label集合,
-  lsPolygon: [],//面集合
-  mouseLabel: undefined,//鼠标Label集合
-  searchInfoWindow: undefined,//弹出信息框
+export default {
+  map: undefined, //地图对象
+  cityName: '廊坊', //默认城市名称
+  defaultZoom: 10, //默认地图比例
+  style: { style: 'googlelite' }, //地图默认样式
+  hasLoaded: false, //是否初次加载
+  lsMarker: [], //marker集合
+  lsRedLabel: [], //预警Label集合
+  lsNameLabel: [], //显示值Label集合,
+  lsPolygon: [], //面集合
+  mouseLabel: undefined, //鼠标Label集合
+  searchInfoWindow: undefined, //弹出信息框
 
   //重置MapUtil
-  reset(){
+  reset() {
     this.clearMapOverlay();
     this.map = undefined;
     this.hasLoaded = false;
@@ -45,67 +45,72 @@ export default{
   },
 
   //初始化地图 el:地图容器Id fcb:地图加载完回调函数
-  render(el, fcb){
+  render(el, fcb) {
     this.createMap(el, fcb);
   },
 
   //创建地图对象 el:地图容器Id fcb:地图加载完回调函数
-  createMap(el, fcb){
+  createMap(el, fcb) {
     let t = this;
-    let map = new BMap.Map(el, {enableMapClick: false});
+    let map = new BMap.Map(el, { enableMapClick: false });
     map.centerAndZoom(this.cityName, this.defaultZoom);
     map.enableScrollWheelZoom();
     map.setMapStyle(this.style);
     this.map = map;
-    this.map.addEventListener('tilesloaded', function () {
+    this.map.addEventListener('tilesloaded', function() {
       !t.hasLoaded && (t.hasLoaded = true, fcb());
     });
   },
 
   //加载数据 a:属性集合 fcbClick:点击回调函数 fcbMouse:鼠标事件
-  loadedOverlay(a, fcbClick, fcbMouse){
+  loadedOverlay(source, fcbClick, fcbMouse) {
     let t = this;
-    let attr = a.attr;
-    if (attr.hd) {
-      let rl = this.createRedLabel(a, false);
-      rl && (this.addMapOverlay(rl, 'RLABEL', attr.lc));
-    }
-    switch (attr.lt) {
-      case 'LL':
-        let vll = this.createValueLabel(a);
-        let nll = this.createNameLabel(a);
-        vll && (this.addMapOverlay(vll, 'MARKER', attr.lc), vll.attributes = a, this.overlayEvent(vll, fcbClick, fcbMouse));
-        nll && (this.addMapOverlay(nll, 'NAMEL', attr.lc));
-        break;
-      case 'ML':
-        let mkl = this.createMarker(a, true);
-        mkl && (this.addMapOverlay(mkl, 'MARKER', attr.lc), mkl.attributes = a, this.overlayEvent(mkl, fcbClick, fcbMouse));
-        break;
-      case 'MI':
-        let mki = this.createMarker(a, false);
-        mki && (this.addMapOverlay(mki, 'MARKER', attr.lc), mki.attributes = a, this.overlayEvent(mki, fcbClick, fcbMouse));
-        break;
-      case 'VL':
-        let vl = this.createValueLabel(a);
-        vl && (this.addMapOverlay(vl, 'MARKER', attr.lc), vl.attributes = a, this.overlayEvent(vl, fcbClick, fcbMouse));
-        break;
-      case 'NL':
-        let nl = this.createNameLabel(a, true);
-        nl && (this.addMapOverlay(nl, 'NAMEL', attr.lc));
-        break;
-      case 'EL':
-        let el = this.createElementLabel(a);
-        el && (this.addMapOverlay(el, 'MARKER', attr.lc), el.attributes = a, this.overlayEvent(el, fcbClick, fcbMouse));
-        break;
-      case 'OP':
-        let op = this.createPolygon(a);
-        op && op.forEach(v => (t.addMapOverlay(v, 'POLYGON', attr.lc), v.attributes = attr));
-        break;
-    }
+    let fs = source.features;
+    let fsId = source.id;
+
+    fs.forEach(f => {
+      let attr = f.attr;
+      if (attr.hd) {
+        let rl = this.createRedLabel(f, false);
+        rl && (this.addMapOverlay(rl, 'RLABEL', fsId));
+      }
+      switch (attr.lt) {
+        case 'LL':
+          let vll = this.createValueLabel(f);
+          let nll = this.createNameLabel(f);
+          vll && (this.addMapOverlay(vll, 'MARKER', fsId), vll.attributes = f, this.overlayEvent(vll, fcbClick, fcbMouse));
+          nll && (this.addMapOverlay(nll, 'NAMEL', fsId));
+          break;
+        case 'ML':
+          let mkl = this.createMarker(f, true);
+          mkl && (this.addMapOverlay(mkl, 'MARKER', fsId), mkl.attributes = f, this.overlayEvent(mkl, fcbClick, fcbMouse));
+          break;
+        case 'MI':
+          let mki = this.createMarker(f, false);
+          mki && (this.addMapOverlay(mki, 'MARKER', fsId), mki.attributes = f, this.overlayEvent(mki, fcbClick, fcbMouse));
+          break;
+        case 'VL':
+          let vl = this.createValueLabel(f);
+          vl && (this.addMapOverlay(vl, 'MARKER', fsId), vl.attributes = f, this.overlayEvent(vl, fcbClick, fcbMouse));
+          break;
+        case 'NL':
+          let nl = this.createNameLabel(f, true);
+          nl && (this.addMapOverlay(nl, 'NAMEL', fsId));
+          break;
+        case 'EL':
+          let el = this.createElementLabel(f);
+          el && (this.addMapOverlay(el, 'MARKER', fsId), el.attributes = f, this.overlayEvent(el, fcbClick, fcbMouse));
+          break;
+        case 'OP':
+          let op = this.createPolygon(f);
+          op && op.forEach(v => (t.addMapOverlay(v, 'POLYGON', fsId), v.attributes = attr));
+          break;
+      }
+    });
   },
 
   //创建Marker a(attributes):空间信息及属性信息 hasLabel:Marker是否加载Label
-  createMarker(a, hasLabel){
+  createMarker(a, hasLabel) {
     let geo = a.geo;
     let attr = a.attr;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -125,7 +130,7 @@ export default{
   },
 
   //创建Label a(attributes):空间信息及属性信息 说明：显示点名称 hasArrow:是否带箭头 默认:false
-  createNameLabel(a, hasArrow){
+  createNameLabel(a, hasArrow) {
     let geo = a.geo;
     let attr = a.attr;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -146,7 +151,7 @@ export default{
   },
 
   //创建污染指标值Label a:属性信息
-  createValueLabel(a){
+  createValueLabel(a) {
     let geo = a.geo;
     let attr = a.attr;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -154,7 +159,7 @@ export default{
       position: pt,
       offset: new BMap.Size(-22, -30)
     };
-    let label = new BMap.Label((attr.vl || '--') + '<div class="arrow" style="width: 0;  height: 0; border-left: 8px solid transparent; border-top: 8px solid; border-right: 8px solid transparent; color:' + attr.col + '; position: absolute;  margin-top:-2px;margin-left:10px  " ></div>', opts);  // 创建文本标注对象
+    let label = new BMap.Label((attr.vl || '--') + '<div class="arrow" style="width: 0;  height: 0; border-left: 8px solid transparent; border-top: 8px solid; border-right: 8px solid transparent; color:' + attr.col + '; position: absolute;  margin-top:-2px;margin-left:10px  " ></div>', opts); // 创建文本标注对象
     label.setStyle({
       color: attr.le > 3 ? '#fff' : '#333',
       background: attr.col,
@@ -170,7 +175,7 @@ export default{
   },
 
   //创建标签元素
-  createElementLabel(a){
+  createElementLabel(a) {
     let geo = a.geo;
     let pt = this.createPoint(geo.lng, geo.lat);
     let domElement = a.attr.el;
@@ -190,7 +195,7 @@ export default{
   },
 
   //创建警报Label a:属性信息 hasIcon:是否为动态图片
-  createRedLabel(a, hasIcon){
+  createRedLabel(a, hasIcon) {
     let geo = a.geo;
     let labelRed = undefined;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -219,7 +224,7 @@ export default{
   },
 
   //创建MouseLabel a:属性信息 hasValue:是否显示指标值
-  createMouseLabel(a, hasValue){
+  createMouseLabel(a, hasValue) {
     this.mouseLabel = new BMap.Label('');
     this.mouseLabel.setStyle({
       border: 'none',
@@ -235,7 +240,7 @@ export default{
   },
 
   //设置MouseLabel显示内容 a:属性信息 hasValue:是否显示指标值
-  setMouseLabelContent(a, hasValue){
+  setMouseLabelContent(a, hasValue) {
     let geo = a.geo;
     let attr = a.attr;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -248,13 +253,13 @@ export default{
   },
 
   //创建点对象 lng:经度 lat:纬度 hasTransform:是否坐标转换  默认百度坐标
-  createPoint(lng, lat, hasTransform){
+  createPoint(lng, lat, hasTransform) {
     let point = new BMap.Point(lng, lat);
     return hasTransform ? this.wgsPointToBd(point) : point;
   },
 
   //创建线对象
-  createPolyline(a){
+  createPolyline(a) {
     let lsOverlay = [];
     let geo = a.geo;
     let paths = geo.paths;
@@ -269,7 +274,7 @@ export default{
   },
 
   //创建面对象
-  createPolygon(a){
+  createPolygon(a) {
     let lsOverlay = [];
     let geo = a.geo;
     let rings = geo.rings;
@@ -284,31 +289,31 @@ export default{
   },
 
   //getBdPolygonStringByRings
-  getBdGeoStringByGeometry(geo){
+  getBdGeoStringByGeometry(geo) {
     let rtValue = undefined;
     geo.forEach(v => (!rtValue ? (rtValue = v[0] + ',' + v[1]) : (rtValue += ';' + v[0] + ',' + v[1])));
     return rtValue;
   },
 
   //根据不同获取等级颜色
-  getPolygonLeaveStyle (leave) {
+  getPolygonLeaveStyle(leave) {
     let sle = {};
     switch (leave) {
       case 0:
-        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#0070CE', fillColor: '#2D96EF', fillOpacity: 0.2};
+        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#0070CE', fillColor: '#2D96EF', fillOpacity: 0.2 };
         break;
       case 1:
-        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#1C7B2A', fillColor: '#6FB779', fillOpacity: 0.2};
+        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#1C7B2A', fillColor: '#6FB779', fillOpacity: 0.2 };
         break;
       case 2:
-        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#8441c9', fillColor: '#E8AAFF', fillOpacity: 0.2};
+        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#8441c9', fillColor: '#E8AAFF', fillOpacity: 0.2 };
         break;
     }
     return sle;
   },
 
   //创建弹出框 a:属性信息 el:弹出框标签字符串 fs:设置弹出框高度和宽度 fcbClose:弹出框关闭回调函数
-  createSearchInfoWindow(a, el, fs, fcbClose){
+  createSearchInfoWindow(a, el, fs, fcbClose) {
     let geo = a.geo;
     let attr = a.attr;
     let pt = this.createPoint(geo.lng, geo.lat);
@@ -316,7 +321,7 @@ export default{
       offset: new BMap.Size(-40, 38)
     });
     this.searchInfoWindow = new BMapLib.SearchInfoWindow(this.map, el, {
-      title: '<sapn style="font-size:16px"><b>' + (attr.nm || '--') + '</b>' + '</span>',             //标题
+      title: '<sapn style="font-size:16px"><b>' + (attr.nm || '--') + '</b>' + '</span>', //标题
       width: (fs && fs.width) || 410,
       height: (fs && fs.height) || 'auto',
       enableAutoPan: true,
@@ -328,17 +333,17 @@ export default{
   },
 
   //设置弹出框显示内容--提交
-  setSearchInfoWindowContent(el){
+  setSearchInfoWindowContent(el) {
     this.searchInfoWindow && this.searchInfoWindow.setContent(el);
   },
 
   //点击列表弹出框 a:属性信息 el:弹出框标签字符串 fcbClose:弹出框关闭回调函数
-  locationSearchInfoWindow(a, el, fs, fcbClose){
+  locationSearchInfoWindow(a, el, fs, fcbClose) {
     this.createSearchInfoWindow(a, el, fs, fcbClose);
   },
 
   //根据图层类型和集合类型获取检索集合 lc:图层标识  ot:覆盖物类型
-  getOverlayByLayerType(lc, ot){
+  getOverlayByLayerType(lc, ot) {
     let ls = [];
     switch (ot.toUpperCase()) {
       case 'MARKER':
@@ -361,82 +366,82 @@ export default{
   },
 
   //地图添加覆盖物集合 o:覆盖物 ot:覆盖物类型 lc:图层标识
-  addMapOverlay(o, ot, lc){
-    o && (ot === 'MARKER' ? (this.lsMarker.push({overlay: o, type: lc}), this.map.addOverlay(o))
-      : (ot === 'RLABEL' ? (this.lsRedLabel.push({overlay: o, type: lc}), this.map.addOverlay(o))
-        : (ot === 'NAMEL' ? (this.lsNameLabel.push({overlay: o, type: lc}), this.map.addOverlay(o))
-          : (ot === 'POLYGON' && (this.lsPolygon.push({overlay: 0, type: lc}, this.map.addOverlay(o)))))));
+  addMapOverlay(o, ot, lc) {
+    o && (ot === 'MARKER' ? (this.lsMarker.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
+      (ot === 'RLABEL' ? (this.lsRedLabel.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
+        (ot === 'NAMEL' ? (this.lsNameLabel.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
+          (ot === 'POLYGON' && (this.lsPolygon.push({ overlay: 0, type: lc }, this.map.addOverlay(o)))))));
   },
 
   //设置覆盖物显隐性 lsOverlay:覆盖物集合 hasVisible:是否显示
-  setOverlayVisible(lsOverlay, hasVisible){
+  setOverlayVisible(lsOverlay, hasVisible) {
     lsOverlay.forEach(v => (hasVisible ? v.overlay.show() : v.overlay.hide()));
   },
 
   //地图删除覆盖物集合 lsOverlay:覆盖物集合
-  removeMapOverlay(lsOverlay){
+  removeMapOverlay(lsOverlay) {
     let t = this;
     lsOverlay.forEach(v => t.map.removeOverlay(v.overlay));
   },
 
   //清除地图MouseLabel
-  removeMouseLabel(){
+  removeMouseLabel() {
     this.mouseLabel && (this.map.removeOverlay(this.mouseLabel), this.mouseLabel = undefined);
   },
 
   //清除地图上所有覆盖物
-  clearMapOverlay(){
+  clearMapOverlay() {
     this.map.clearOverlays();
   },
 
   //清除SearchInfoWindow
-  clearSearchInfoWindow(){
+  clearSearchInfoWindow() {
     this.searchInfoWindow && (this.searchInfoWindow.close(), this.searchInfoWindow = undefined);
   },
 
   //覆盖物添加事件 o:覆盖物 efc:是否注册点击事件,包含回调函数({hasEvent:true|false,fcbClick:fun}) efm:是否注册鼠标事件,包含回调函数({hasEvent:true|false,fcbOver:fun,fcbOut:fun})
-  overlayEvent(o, efc, efm){
+  overlayEvent(o, efc, efm) {
     let t = this;
-    (efc && efc.hasEvent) && (o.addEventListener('click', function (e) {
+    (efc && efc.hasEvent) && (o.addEventListener('click', function(e) {
       let tg = e.target || e.currentTarget;
       let atr = tg.attributes;
-      efc.fcbClick(atr, function (attr, res, fs) {
+      efc.fcbClick(atr, function(attr, res, fs) {
         t.createSearchInfoWindow(attr, res, fs);
       });
     }));
-    (efm && efm.hasEvent) && (o.addEventListener('mouseover', function (e) {
+    (efm && efm.hasEvent) && (o.addEventListener('mouseover', function(e) {
       let tg = e.target || e.currentTarget;
       let atr = tg.attributes;
       !t.mouseLabel ? t.createMouseLabel(atr, efm.hasValue) : t.setMouseLabelContent(atr, efm.hasValue);
-    }), o.addEventListener('mouseout', function (e) {
+    }), o.addEventListener('mouseout', function(e) {
       t.mouseLabel && t.mouseLabel.hide();
     }));
   },
 
   //WGS坐标转百度坐标 pt:wgs坐标点
-  wgsPointToBd: function (pt) {
+  wgsPointToBd: function(pt) {
     let transPoint = this.transformFun([pt.lng, pt.lat]);
     return new BMap.Point(transPoint[0], transPoint[1]);
   },
 
   //WGS坐标转百度坐标 path:点坐标(path:[x,y])
-  transformFun: function (path) {
+  transformFun: function(path) {
     let gcPoint = Coordtransform.wgs84togcj02(path[0], path[1]);
     return Coordtransform.gcj02tobd09(gcPoint[0], gcPoint[1]);
   },
 
   //设置默认城市 name:默认城市
-  setCityName(name){
+  setCityName(name) {
     this.cityName = name;
   },
 
   //设置默认地图比例 zoom:默认比例
-  setDefaultZoom(zoom){
+  setDefaultZoom(zoom) {
     this.defaultZoom = zoom;
   },
 
   //设置地图样式 style:默认地图样式
-  setDefaultStyle(style){
+  setDefaultStyle(style) {
     this.style = style;
   }
 }
