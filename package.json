@@ -14,7 +14,8 @@
     "echarts": "^3.8.5",
     "element-ui": "^2.3.7",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "wind-layer": "^0.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

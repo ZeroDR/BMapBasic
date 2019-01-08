@@ -35,6 +35,9 @@ export default {
       case 'LAYERONE':
         url = 'static/data/TY1.json';
         break;
+      case 'WIND':
+        url = 'static/data/out.json';
+        break;
     }
     return url;
   }

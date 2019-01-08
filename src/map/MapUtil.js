@@ -18,12 +18,13 @@
  * hd:是否警报(默认判断为污染等级，也可自定义)
  */
 import BMap from 'BMap'
+import WindLayer from 'wind-layer'
 
 export default {
   map: undefined, //地图对象
   cityName: '廊坊', //默认城市名称
   defaultZoom: 10, //默认地图比例
-  style: { style: 'googlelite' }, //地图默认样式
+  style: {style: 'googlelite'}, //地图默认样式
   hasLoaded: false, //是否初次加载
   lsMarker: [], //marker集合
   lsRedLabel: [], //预警Label集合
@@ -52,14 +53,23 @@ export default {
   //创建地图对象 el:地图容器Id fcb:地图加载完回调函数
   createMap(el, fcb) {
     let t = this;
-    let map = new BMap.Map(el, { enableMapClick: false });
+    let map = new BMap.Map(el, {enableMapClick: false});
     map.centerAndZoom(this.cityName, this.defaultZoom);
     map.enableScrollWheelZoom();
     map.setMapStyle(this.style);
     this.map = map;
-    this.map.addEventListener('tilesloaded', function() {
-      !t.hasLoaded && (t.hasLoaded = true, fcb());
+    this.map.addEventListener('tilesloaded', function () {
+      !t.hasLoaded && (t.hasLoaded = true, fcb(map));
     });
+  },
+
+  //加载动态风场
+  loadedWindLayer(data) {
+    let baiduWindy = new WindLayer.BMapWind(data, {
+      projection: 'EPSG:3857',
+      ratio:1
+    });
+    this.map.addOverlay(baiduWindy);
   },
 
   //加载数据 a:属性集合 fcbClick:点击回调函数 fcbMouse:鼠标事件
@@ -300,13 +310,13 @@ export default {
     let sle = {};
     switch (leave) {
       case 0:
-        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#0070CE', fillColor: '#2D96EF', fillOpacity: 0.2 };
+        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#0070CE', fillColor: '#2D96EF', fillOpacity: 0.2};
         break;
       case 1:
-        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#1C7B2A', fillColor: '#6FB779', fillOpacity: 0.2 };
+        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#1C7B2A', fillColor: '#6FB779', fillOpacity: 0.2};
         break;
       case 2:
-        sle = { strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#8441c9', fillColor: '#E8AAFF', fillOpacity: 0.2 };
+        sle = {strokeWeight: 1, strokeStyle: 'dashed', strokeColor: '#8441c9', fillColor: '#E8AAFF', fillOpacity: 0.2};
         break;
     }
     return sle;
@@ -367,10 +377,10 @@ export default {
 
   //地图添加覆盖物集合 o:覆盖物 ot:覆盖物类型 lc:图层标识
   addMapOverlay(o, ot, lc) {
-    o && (ot === 'MARKER' ? (this.lsMarker.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
-      (ot === 'RLABEL' ? (this.lsRedLabel.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
-        (ot === 'NAMEL' ? (this.lsNameLabel.push({ overlay: o, type: lc }), this.map.addOverlay(o)) :
-          (ot === 'POLYGON' && (this.lsPolygon.push({ overlay: 0, type: lc }, this.map.addOverlay(o)))))));
+    o && (ot === 'MARKER' ? (this.lsMarker.push({overlay: o, type: lc}), this.map.addOverlay(o)) :
+      (ot === 'RLABEL' ? (this.lsRedLabel.push({overlay: o, type: lc}), this.map.addOverlay(o)) :
+        (ot === 'NAMEL' ? (this.lsNameLabel.push({overlay: o, type: lc}), this.map.addOverlay(o)) :
+          (ot === 'POLYGON' && (this.lsPolygon.push({overlay: 0, type: lc}, this.map.addOverlay(o)))))));
   },
 
   //设置覆盖物显隐性 lsOverlay:覆盖物集合 hasVisible:是否显示
@@ -402,30 +412,30 @@ export default {
   //覆盖物添加事件 o:覆盖物 efc:是否注册点击事件,包含回调函数({hasEvent:true|false,fcbClick:fun}) efm:是否注册鼠标事件,包含回调函数({hasEvent:true|false,fcbOver:fun,fcbOut:fun})
   overlayEvent(o, efc, efm) {
     let t = this;
-    (efc && efc.hasEvent) && (o.addEventListener('click', function(e) {
+    (efc && efc.hasEvent) && (o.addEventListener('click', function (e) {
       let tg = e.target || e.currentTarget;
       let atr = tg.attributes;
-      efc.fcbClick(atr, function(attr, res, fs) {
+      efc.fcbClick(atr, function (attr, res, fs) {
         t.createSearchInfoWindow(attr, res, fs);
       });
     }));
-    (efm && efm.hasEvent) && (o.addEventListener('mouseover', function(e) {
+    (efm && efm.hasEvent) && (o.addEventListener('mouseover', function (e) {
       let tg = e.target || e.currentTarget;
       let atr = tg.attributes;
       !t.mouseLabel ? t.createMouseLabel(atr, efm.hasValue) : t.setMouseLabelContent(atr, efm.hasValue);
-    }), o.addEventListener('mouseout', function(e) {
+    }), o.addEventListener('mouseout', function (e) {
       t.mouseLabel && t.mouseLabel.hide();
     }));
   },
 
   //WGS坐标转百度坐标 pt:wgs坐标点
-  wgsPointToBd: function(pt) {
+  wgsPointToBd: function (pt) {
     let transPoint = this.transformFun([pt.lng, pt.lat]);
     return new BMap.Point(transPoint[0], transPoint[1]);
   },
 
   //WGS坐标转百度坐标 path:点坐标(path:[x,y])
-  transformFun: function(path) {
+  transformFun: function (path) {
     let gcPoint = Coordtransform.wgs84togcj02(path[0], path[1]);
     return Coordtransform.gcj02tobd09(gcPoint[0], gcPoint[1]);
   },

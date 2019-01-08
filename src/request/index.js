@@ -22,7 +22,7 @@ export default {
         data = hasLocal ? data : {
           success: data.hasOwnProperty('status') ? data.status : data.Status,
           history: data.history ? (typeof data.history === 'string' ? JSON.parse(data.history) : data.history) : undefined,
-          features: (typeof data.obj === 'string' ? JSON.parse(data.obj) : data.obj) || (typeof data.Data === 'string' ? JSON.parse(data.Data) : data.Data)
+          features: data//(typeof data.obj === 'string' ? JSON.parse(data.obj) : data.obj) || (typeof data.Data === 'string' ? JSON.parse(data.Data) : data.Data)
         };
         callback1(data);
       }

@@ -98,35 +98,47 @@ export default {
     },
 
     //加载地图
-    loadedMap() {
-      let t = this;
-      let lc = 'LAYER_GS';
+    loadedMap(map) {
       RequestHandle.request({
-        ptype: 'GSCITYPOLLUTION',
+        ptype: 'WIND',
         type: 'GET',
         pms: {},
         hasLocal: false
-      }, function(data) {
-        t.source[lc] = { features: data.features || [], history: data.history || [] };
-        let dt = t.dataTransform(data, 'citygid', 'pointname', 'aqi', 'LL');
-        console.log(JSON.stringify(dt[0]));
-        BMapUtil.loadedOverlay({
-          id: lc,
-          features: dt
-        }, { hasEvent: true, fcbClick: t.requestMarker }, { hasEvent: false, hasValue: true });
-      }, function(ex) {
-        console.error(ex);
+      }, (res)=>{
+        if (res.features) {
+          BMapUtil.loadedWindLayer(res.features);
+        }
+      },ex=>{
       });
 
-      setTimeout(function() {
-        let Te = Vue.extend(Test);
-        new Te().$mount('.c_com')
+      // let t = this;
+      // let lc = 'LAYER_GS';
+      // RequestHandle.request({
+      //   ptype: 'GSCITYPOLLUTION',
+      //   type: 'GET',
+      //   pms: {},
+      //   hasLocal: false
+      // }, function(data) {
+      //   t.source[lc] = { features: data.features || [], history: data.history || [] };
+      //   let dt = t.dataTransform(data, 'citygid', 'pointname', 'aqi', 'LL');
+      //   console.log(JSON.stringify(dt[0]));
+      //   BMapUtil.loadedOverlay({
+      //     id: lc,
+      //     features: dt
+      //   }, { hasEvent: true, fcbClick: t.requestMarker }, { hasEvent: false, hasValue: true });
+      // }, function(ex) {
+      //   console.error(ex);
+      // });
+
+      // setTimeout(function() {
+      //   let Te = Vue.extend(Test);
+      //   new Te().$mount('.c_com')
         //          t.loadedGeo();
         //          let sc = t.source[lc];
         //          let dt = (sc && t.dataTransform(sc, lc, 'citygid', 'so2', 'LL')) || [];
         ////          console.log(dt);
         //          dt && (BMapUtil.clearMapOverlay(), dt.forEach(v => (BMapUtil.loadedOverlay(v, {hasEvent: true, fcbClick: t.requestMarker}, {hasEvent: false, hasValue: false}))));
-      }, 5000);
+      // }, 5000);
     },
 
     loadedGeo() {
