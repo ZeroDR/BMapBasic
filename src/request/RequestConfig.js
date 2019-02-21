@@ -36,7 +36,7 @@ export default {
         url = 'static/data/TY1.json';
         break;
       case 'WIND':
-        url = 'static/data/out.json';
+        url = 'static/data/gfs.json';//'http://www.tf110.com/data/gfs/gfs.json';//
         break;
     }
     return url;

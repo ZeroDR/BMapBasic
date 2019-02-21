@@ -106,7 +106,7 @@ export default {
         hasLocal: false
       }, (res)=>{
         if (res.features) {
-          BMapUtil.loadedWindLayer(res.features);
+          BMapUtil.loadedWindLayer(res.features['2019011714']);
         }
       },ex=>{
       });

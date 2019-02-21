@@ -32,6 +32,7 @@ export default {
   lsPolygon: [], //面集合
   mouseLabel: undefined, //鼠标Label集合
   searchInfoWindow: undefined, //弹出信息框
+  windLayer:undefined,
 
   //重置MapUtil
   reset() {
@@ -65,11 +66,8 @@ export default {
 
   //加载动态风场
   loadedWindLayer(data) {
-    let baiduWindy = new WindLayer.BMapWind(data, {
-      projection: 'EPSG:3857',
-      ratio:1
-    });
-    this.map.addOverlay(baiduWindy);
+    this.windLayer = new WindLayer.BMapWind(data);
+    this.map.addOverlay(this.windLayer);
   },
 
   //加载数据 a:属性集合 fcbClick:点击回调函数 fcbMouse:鼠标事件
