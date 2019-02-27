@@ -3,7 +3,7 @@
         <div class="time-progress">
             <div class="time-over" :style='"width:"+progressWidth+"px"'></div>
             <i :style='"left:"+ nowLeft+"px"'></i>
-            <ii v-for="v in 48" :style='"left:"+(v===1?39 : 39+wd*(v - 1))+"px"' :data-attr="v"></ii>
+            <ii v-for="v in 48" :style='"left:"+(v===1? 40 : 39+wd*(v - 1))+"px"' :data-attr="v"></ii>
         </div>
         <div class="week-panel">
             <div class="time-switch" @click="switchClickEvent">
@@ -31,6 +31,8 @@
     </div>
 </template>
 <script>
+    import {mapMutations,mapState} from 'vuex'
+
     export default {
         name: 'timeline',
         data() {
@@ -50,6 +52,9 @@
             };
         },
         components:{},
+        computed:{
+            ...mapState(['lineTime'])
+        },
         created(){
             const _this = this;
             const timeWidth = (document.documentElement.offsetWidth - 470);
@@ -59,6 +64,10 @@
         mounted(){
         },
         methods:{
+            ...mapMutations([
+                'setLineTime'
+            ]),
+
             //状态开关点击事件
             switchClickEvent(e){
                 this.hasStartSwitch = !this.hasStartSwitch;
@@ -72,8 +81,10 @@
                     return;
                 }
                 this.progressWidth = e.clientX;
-                this.nowHouse = this.getHouseByLeft(e.clientX);
+                const tm = this.getHouseByLeft(e.clientX);
+                this.nowHouse = tm.house;
                 this.nowPopupLeft = e.clientX;
+                this.$store.commit('setLineTime',tm.year+'-'+tm.month+'-'+tm.day + ' ' + tm.house + ':00:00');
             },
 
             //时间轴鼠标事件
@@ -83,7 +94,8 @@
                     return;
                 }
                 this.clickLeft = e.clientX;
-                this.clickHouse = this.getHouseByLeft(e.clientX);
+                const tm = this.getHouseByLeft(e.clientX);
+                this.clickHouse = tm.house;
             },
 
             //时间轴鼠标事件
@@ -112,9 +124,11 @@
                         }else{
                             _this.progressWidth += _this.wd / 3;
                         }
-                        _this.nowHouse = _this.getHouseByLeft(_this.progressWidth);
+                        const tm = _this.getHouseByLeft(_this.progressWidth);
+                        _this.$store.commit('setLineTime',tm.year+'-'+tm.month+'-'+tm.day + ' ' + tm.house + ':00:00');
+                        _this.nowHouse = tm.house;//_this.getHouseByLeft(_this.progressWidth);
                         _this.nowPopupLeft = _this.progressWidth;
-                    },1000);
+                    },5000);
                 }
             },
 
@@ -138,6 +152,9 @@
                 for (let i = 0; i < 7; i++) {
                     startTime.setDate(startTime.getDate() + 1);
                     let tm = {
+                        year:startTime.getFullYear(),
+                        month:startTime.getMonth() + 1,
+                        day:startTime.getDate(),
                         date: (startTime.getMonth() + 1) + '-' + startTime.getDate(),
                         week: this.getWeek(startTime.getDay())
                     };
@@ -178,8 +195,10 @@
             getHouseByLeft(l){
                 const d = 40;
                 const h = Math.round((3*(l - d))/this.wd%24);
-                let week = parseInt((3*(l - d))/this.wd/24);
-                return h;
+                const weekIndex = parseInt((3*(l - d))/this.wd/24);
+                let week = this.weeks[weekIndex];
+                week['house'] = h > 23 ? 0 : h;
+                return week;
             }
         }
     };
@@ -191,19 +210,20 @@
         left: 0;
         bottom: 0;
         height: 52px;
-        background: rgba(51,51,51,.8);
+        background: rgba(27,33,67,.8);
         z-index: 1000;
         cursor: pointer;
         .time-progress{
             width: 100%;
             height: 8px;
-            background: #ddd;
+            background: rgba(255,255,255,.5);
             cursor: pointer;
             .time-over{
                 display: block;
                 height: 8px;
                 width: 140px;
-                background: #009845;
+                /*background: #009845;*/
+                background: linear-gradient(to left, #4FACFE 0%,#00F2FE 100%);
             }
             i{
                 display: block;
@@ -212,7 +232,7 @@
                 top: 0;
                 left: 0;
                 width: 7px;
-                background: #a8cb09;
+                background: #094978;
             }
             ii{
                 width: 1px;
@@ -226,23 +246,23 @@
         }
         .week-panel{
             .time-switch{
-                width: 19px;
+                width: 40px;
                 float: left;
                 height: 46px;
-                border-right: 1px solid #ddd;
+                /*border-right: 1px solid #ddd;*/
                 padding: 5px 10px;
                 .icon-panel{
                     width: 0;
                     height: 0;
                     border-top: 10px solid transparent;
-                    border-left: 20px solid #fff;
+                    border-left: 20px solid #02F0FE;
                     border-bottom: 10px solid transparent;
                     background: transparent;
                     cursor: pointer;
                     margin-top: 6px;
                 }
                 .icon-switch{
-                    color: #fff;
+                    color: #02F0FE;
                     margin-top: 4px;
                     font-size: 14px;
                     margin-left: -4px;
@@ -252,9 +272,9 @@
                 float: left;
                 width: calc(100% - 40px);
                 .week-item{
-                    width: calc(16.66% - 1px);
+                    width: 16.66%;
                     height: 44px;
-                    border-right: 1px solid #ddd;
+                    border-left: 1px solid #ddd;
                     float: left;
                     text-align: center;
                     color: #fff;
@@ -287,7 +307,7 @@
         .now-time{
             position: absolute;
             padding: 4px 8px;
-            height: 16px;
+            height: 24px;
             left: 100px;
             bottom: 62px;
             background: rgba(0,0,0,.3);
@@ -308,10 +328,10 @@
         .click-time{
             position: absolute;
             padding: 4px 8px;
-            height: 16px;
+            height: 24px;
             left: 0;
             bottom: 62px;
-            background: #009845;
+            background: #02F0FE;
             color: #fff;
             z-index: 1001;
             display: none;
@@ -324,7 +344,7 @@
                 margin-left: -10px;
                 left: 50%;
                 top: 24px;
-                border-top-color: #009845;
+                border-top-color: #02F0FE;
             }
         }
     }
